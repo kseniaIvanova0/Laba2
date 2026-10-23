@@ -14,43 +14,51 @@ int main() {
   double initialPressure, chamberVolume, pumpVolume;
   cout << "Enter the initial value p0: ";
   cin >> initialPressure;
-  cout << "Enter the chamber volume V (л): ";
+  cout << "Enter the chamber volume V (l): ";
   cin >> chamberVolume;
-  cout << "Enter the pump volume V0 (л): ";
+  cout << "Enter the pump volume V0 (l): ";
   cin >> pumpVolume;
 
   // calculation of the constant
   double ratio = chamberVolume / (chamberVolume + pumpVolume);
 
-  const int precision = 3;       // Precision for output
-  const int startStroke1 = 10;   // Start of first section
-  const int step1 = 10;          // Step of first section
-  const int endStroke1 = 50;     // End of first section
-  const int startStroke2 = 100;  // Start of second section
-  const int step2 = 50;          // Step of second section
-  const int endStroke2 = 250;    // End of second section
+  // Precision for output
+  const int precision = 3;       
+  // Step for the first section (n = 10..50)
+  const double firstStep = 10.0;
+  // Step for the second section (n = 100..250)
+  const double secondStep = 50.0;
+  // Initial number of strokes (n)
+  const double start = 10.0;
+  //Boundary between the first and second sections
+  const double changePoint = 50.0;
+  // Maximum number of strokes (end of the table)
+  const double finish = 250.0;
 
-  int strokeCount;
-  double residualPressure;
+  int stepIndex = 0;
+  double argument = start;
+  double result;
 
   cout << "\n Table of values p = f(n)\n"
       << "n\tp\n";
   cout << fixed << setprecision(precision);
 
   // loop do while 
-  strokeCount = startStroke1;
   do {
-      residualPressure = initialPressure * pow(ratio, strokeCount);
-      cout << strokeCount << "\t" << residualPressure << "\n";
-      strokeCount += step1;
-  } while (strokeCount <= endStroke1);
+      result = initialPressure * pow(ratio, argument);
+      cout << argument << "\t" << result << "\n";
+      ++stepIndex;
+      argument = start + stepIndex * firstStep;
+  } while (argument <= changePoint);
 
   //  loop while 
-  strokeCount = startStroke2;
-  while (strokeCount <= endStroke2) {
-      residualPressure = initialPressure * pow(ratio, strokeCount);
-      cout << strokeCount << "\t" << residualPressure << "\n";
-      strokeCount += step2;
+  stepIndex = 1;
+  argument = changePoint + stepIndex * secondStep;
+  while (argument <= finish) {
+      result = initialPressure * pow(ratio, argument);
+      cout << argument << "\t" << result << "\n";
+      ++stepIndex;
+      argument = changePoint + stepIndex * secondStep;
   }
 
   return 0;
