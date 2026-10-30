@@ -19,11 +19,10 @@ int main() {
   cout << "Enter the pump volume V0 (l): ";
   cin >> pumpVolume;
 
-  // calculation of the constant
-  double ratio = chamberVolume / (chamberVolume + pumpVolume);
+  double ratio;
+  ratio= chamberVolume / (chamberVolume + pumpVolume);
 
-  // Precision for output
-  const int precision = 3;       
+  int precision = 3;       
   // Step for the first section (n = 10..50)
   const double firstStep = 10.0;
   // Step for the second section (n = 100..250)
@@ -40,25 +39,23 @@ int main() {
   double result;
 
   cout << "\n Table of values p = f(n)\n"
-      << "n\tp\n";
+       << "n\tp\n";
   cout << fixed << setprecision(precision);
 
-  // loop do while 
   do {
-      result = initialPressure * pow(ratio, argument);
-      cout << argument << "\t" << result << "\n";
-      ++stepIndex;
-      argument = start + stepIndex * firstStep;
+    result = initialPressure * pow(ratio, argument);
+    cout << argument << "\t" << result << "\n";
+    ++stepIndex;
+    argument = start + stepIndex * firstStep;
   } while (argument <= changePoint);
-
-  //  loop while 
+ 
   stepIndex = 1;
   argument = changePoint + stepIndex * secondStep;
   while (argument <= finish) {
-      result = initialPressure * pow(ratio, argument);
-      cout << argument << "\t" << result << "\n";
-      ++stepIndex;
-      argument = changePoint + stepIndex * secondStep;
+    result = initialPressure * pow(ratio, argument);
+    cout << argument << "\t" << result << "\n";
+    ++stepIndex;
+    argument = changePoint + stepIndex * secondStep;
   }
 
   return 0;
